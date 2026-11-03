@@ -1,3 +1,5 @@
+# Aden Thompson & Cody Reep
+
 #you will implement linear regression with multiple variables to
 #predict the prices of houses. Suppose you are selling your house and you
 #want to know what a good market price would be. One way to do this is to
@@ -87,8 +89,9 @@ for feature in data:
 
 #Get the basic info
 print(data.info())
+print()
 
-#Get a desciription of the data
+# Get a description of the data
 print(data.describe())
 
 #Get the first 5 rows
@@ -128,15 +131,6 @@ for iter in range(iterations):
         print("ROUND", iter)
         print(theta)
 
-
-# Perform a single gradient step on the parameter thetas.
-
-# 1 Step gradient
-#MAY NO BE NEEDED
-#Get a new random theta
-theta2 = np.random.rand(3,1) # random initialization
-# Apply 1 step of gradient descent
-theta2 = theta2 - alpha * 2 / len(data) * X_b.T.dot(X_b.dot(theta2) - Y)
 	
 #   After updating theta, compute the cost of using the current values of theta to fit the data points
 #   You should set J_history(iter) to the cost of using the current values of theta.
@@ -146,7 +140,7 @@ theta2 = theta2 - alpha * 2 / len(data) * X_b.T.dot(X_b.dot(theta2) - Y)
 
 
 # Cost calculation
-def J_history(theta):
+def Costs(theta_new):
     # Track error per row
     errors = []
     i = 0
@@ -164,16 +158,17 @@ def J_history(theta):
     cost = (1 / (len(X_b))) * sum(errors)
     return cost
 
-theta = np.random.rand(3,1)
-Costs = []
+# theta_new to disambiguate it from Part 2's theta exercise
+theta_new = np.random.rand(3,1)
+J_history = []
 for iter in range(iterations):
     # Calculate gradient
     gradients = 2/len(data) * X_b.T.dot(X_b.dot(theta) - Y)
     # Update theta
     theta = theta - alpha * gradients
 
-    # Get cost as a function of the current theta from J_history
-    current_cost = J_history(theta)
+    # Get cost as a function of the current theta from Costs
+    current_cost = Costs(theta_new)
     # Track costs across theta values
     Costs.append(current_cost)
 
@@ -219,16 +214,9 @@ print("ESTIMATE:", predict(1650, 3))
 
 ####################################################################
 
-#Verify that our learned theta values make sense.
-
-#import sklearn
-from sklearn.linear_model import LinearRegression
-
-#Set X to the size and room_count
-X = data[["size", "room_count"]]
-
-#Apply linear regression and fit it to the features and the target
-lin_reg = LinearRegression()
-lin_reg.fit(X, Y)
-#print the theta values
-print(lin_reg.intercept_, lin_reg.coef_)
+# EXTRA: Verify that our learned theta values make sense.
+from sklearn.linear_model import LinearRegression # import LinearRegression from sklearn
+X = data[["size", "room_count"]] # Set X to the size and room_count
+lin_reg = LinearRegression() # Instantiate
+lin_reg.fit(X, Y) # Fit
+print("\nCHECK THETAS:", lin_reg.intercept_, lin_reg.coef_) # Print
